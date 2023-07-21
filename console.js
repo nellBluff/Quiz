@@ -9,22 +9,27 @@ const fs = require('fs');
 const { resolve } = require('path');
 const readline = require('readline');
 const { reading } = require('./readFiles');
+const chalk = require('chalk');
+const colors = require('colors');
 
-const readFiles = fs.readFileSync(
-  `${__dirname}/topics/nighthawk_flashcard_data.txt`,
-  'utf-8'
-);
-
+const readFiles = fs.readFileSync(`${__dirname}/topics/tesk-arr.txt`, 'utf-8');
+// const readFiles = fs.readFileSync(`${__dirname}/topics/tesk-operators.txt`, 'utf-8');
 const newArr = reading(readFiles);
-
-const topics = ['Тема 1', 'Тема 2', 'Тема 3'];
+const topics = ['Массивы', 'Операторы JS'];
+console.log(
+  chalk.blue(`\n Выбери тему для ${chalk.underline.bgBlue('QUIZ!')} \n`)
+    .brightCyan.bold
+);
+topics.map((el, index) =>
+  console.log(chalk.blue(`${index + 1} ${el} \n`).bold)
+);
+let points = 0;
 const questions = newArr[0];
 const answers = newArr[1];
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
 });
-console.log('\n' + 'Выбери тему для QUIZ' + '\n');
 
 // создаем запрос с консоли
 const askQuestion = (question) => {
@@ -39,12 +44,13 @@ const getAnswers = async () => {
   const userAnswers = [];
   for (let i = 0; i < questions.length; i++) {
     const answer = await askQuestion(
-      `Вопрос №${i + 1} ---> ${questions[i]} \n\n`
+      `Вопрос №${i + 1} ---> ${questions[i]} \n\n`.brightCyan.bold
     );
     if (answer.toLowerCase().trim() === answers[i].toLowerCase().trim()) {
-      console.log(`Правильно! \n\n`);
+      points++;
+      console.log(chalk.black.bgYellow.bold(`Правильно! \n\n`).bold);
     } else {
-      console.log(`Неправильно! \n\n`);
+      console.log(chalk.black.bgRed.bold(`Неправильно! \n\n`).bold);
     }
     userAnswers.push(answer);
   }
@@ -52,6 +58,9 @@ const getAnswers = async () => {
 };
 
 getAnswers().then(() => {
-  console.log('<<<<<<<<<<___THE END___>>>>>>>>>>' + '\n' + '\n' + '\n');
+  console.log(`Количество правильных ответов - ${points} \n`.brightCyan.bold);
+  console.log(
+    ('<<<<<<<<<<___THE END___>>>>>>>>>>' + '\n' + '\n' + '\n').rainbow.bold
+  );
   rl.close();
 });
