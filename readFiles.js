@@ -6,7 +6,7 @@ const readFiles = fs.readFileSync(
 );
 
 function transplate(str) {
-  const reg = /[А-я ?!-\d]+/gi;
+  const reg = /[А-я A-z{}?!:;'"&|=,+)(--\d]+/gi;
   const matches = str.match(reg);
   return matches;
 }
