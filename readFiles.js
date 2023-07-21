@@ -5,23 +5,19 @@ const readFiles = fs.readFileSync(
   'utf-8'
 );
 
-function transplate(str) {
+function reading(readFiles) {
   const reg = /[А-я A-z{}?!:;'"&|=,+)(--\d]+/gi;
-  const matches = str.match(reg);
-  return matches;
-}
+  const matches = readFiles.match(reg);
 
-const doneFile = transplate(readFiles);
-
-function doubleArr(arr) {
   const QA = [];
-  const q = arr.filter((el, index) => index % 2 === 0);
-  const a = arr.filter((el, index) => index % 2);
+  const q = matches.filter((el, index) => index % 2 === 0);
+  const a = matches.filter((el, index) => index % 2);
   QA.push(q, a);
-  console.log(QA);
+  // console.log(QA);
   return QA;
 }
+// const result = doubleArr(doneFile);
 
-const result = doubleArr(doneFile);
-
-module.exports = result;
+module.exports = {
+  reading,
+};
